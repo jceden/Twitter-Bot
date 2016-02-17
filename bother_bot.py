@@ -1,55 +1,51 @@
 #!/usr/bin/python
 import os
 import sys
+import csv
 import datetime
 import time
 from twython import Twython
 from random import randint
 
+def makelist ( filename ):
+	#open file and read file into list(array) without the newlines
+	with open(filename) as f:
+		mylist = f.read().splitlines()
+	#close the file
+	f.close
+	return mylist
+
 def test():
 
-	#if I can get this to work, random hour and random minute
-	hour = randint(0,23)
-	minute = randint(0,59)
-
 	#open cat facts!
-	#filename = 'cat_facts.txt'
-	#open file and read file into list(array) without the newlines
-	with open('cat_facts.txt') as f:
-		lines = f.read().splitlines()
-	#close the file
-	f.close()
-	#debug file opening in append mode
-	test = open('test.txt', 'a')
-	#debug = open('debug.txt','a')
-	
+	filename = 'cat_facts.txt'
+
 	while(1):
 		#until I can workout a random time, pick a time between 1 minute and 24 hours
 		wait = randint(60,86400)
 		test_out = 'Waiting: ' + str(wait) + ' seconds '
 		test.write(test_out)
+		lines = []
+		lines = makelist( filename )
 		#counter for use in the while loop
 		counter = False
 		#the target is the twitter handle we want to bother
-		target = '<person to bother>'
+		target = '<enter a twitter handle'
 		#choose a tweet, if it is too long pick another
 		while(counter == False):
 			fact = randint(0, len(lines)-1)
 			tweet = str(target + lines[fact])
 			if(len(tweet)<=140):
 				counter = True
-				test_out = 'Chose fact number: ' + str(fact) + '\n'
-				test.write(test_out)
-		#debug.write(tweet)
 		#connect to Twitter
 		#application key
-		APP_KEY = '<redacted>'
+		APP_KEY = ''
 		#application secret
-		APP_SECRET = '<redacted>'
+		APP_SECRET = ''
 		#User OAUTH tokens
-		OAUTH_TOKEN = '<redacted>'
+		OAUTH_TOKEN = ''
 		#user OAUTH secret
-		OAUTH_SECRET = '<redacted>'
+		OAUTH_SECRET = ''
 	
 		twitter = Twython(APP_KEY,APP_SECRET,OAUTH_TOKEN,OAUTH_SECRET)
 		twitter.verify_credentials()
